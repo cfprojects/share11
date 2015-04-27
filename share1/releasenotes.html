@@ -1,0 +1,56 @@
+<h1>ShareCFC Release Notes</h1>
+
+<h3>January 12, 2011</h3>
+
+It has been a while since I've been able to work on this API. A user, Stephen Cassady, did a LOT of work and has signficantly updated the CFC. I'm pasting in his notes below. All credit
+goes to him.
+
+1. After a month (with the most useless customer support I've ever had, and
+no way to escalate the issue to anyone actually involved in the API, and
+their response being quote "I would like to inform you that this the best
+which we can help you. We
+would request you please contact to the devnet regarding the same as it
+seems that this is a programming related issue.") I've been able to figure
+out what the issue was:
+
+The API supported (upto mid December) URL was:
+https://api.share.acrobat.com/webservices/index.do
+
+Without any notification, this was shut down. The new URL the API calls is:
+https://api.acroboat.com/webservices/index.do
+
+The attached update code has the new URL.
+
+2. Yes, the code attached not only has the fix for the above, but includes a
+problem with ColdFusion and XML documents for CFHTTP. As outlined in this
+thread here:
+http://forums.adobe.com/thread/557943?decorator=print&displayFullThread=true
+I found that (at least under CF8, fully patched) that the order of FormField
+or Body could cause errors in the XML file (CF would modify the last few
+characters of the XML file making it fail - likely replacing a correct end
+of file character). By reversing the order that the original share.cfc uses
+(the attached file is correct), the CFHTTP didn't mess with XML files
+anymore. An interesting edge case that was a PAIN to identify correctly.
+
+3. I've added a catch for "NoTOU" - another undocumented return which
+requires the account to log into the web site and accept an updated Terms of
+Service (yup, the API stops working until you log back in and accept new TOS
+- but there isn't any communication to the API people about this and
+required further work to discover).
+
+So the attached file fixes IS AN UPDATE to the existing share, fixing 3
+issues - (1) the wrong API url, (2) The CFHTTP bug for XML files, and (3) A
+NoTOU catch with an explanation for new users of this CFC.
+
+
+<h3>July 3, 2009</h3>
+Todd Sharp fixed a bug in the shareHit method.
+
+<h3>May 30, 2008</h3>
+Just switched to the new API url.
+
+<h3>November 2, 2007</h3>
+Move now works correctly.
+
+<h3>October 31, 2007</h3>
+Changes include docs and release notes. No real code changes.

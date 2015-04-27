@@ -1,0 +1,137 @@
+<h1>ShareCFC Documentation</h1>
+
+<p>
+Welcome to ShareCFC, a ColdFusion based wrapped for Adobe's Share service. For the latest release, please see 
+<a href="http://sharecfc.riaforge.org">http://sharecfc.riaforge.org</a>. Release notes, containing a history
+of changes, may be found in the <a href="releasenotes.html">releasenotes.html</a> file. Please report any bugs to the web site.
+</p>
+
+<h2>License and Credits</h2>
+<p>
+Copyright 2007 <a href="http://www.coldfusionjedi.com">Raymond Camden</a><br />
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
+compliance with the License. You may obtain a copy of the License at
+</p>
+
+<p>
+http://www.apache.org/licenses/LICENSE-2.0
+</p>
+
+<p>
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and
+limitations under the License.
+</p>
+
+<h2>Usage</h2>
+
+<p>
+Before you can use the CFC, you must have 4 pieces of information:
+</p>
+
+<ul>
+	<li>You need a username and password for an account at <a href="http://share.adobe.com">Share</a>.</li>
+	<li>You need a developer key and shared secret. This may be found on the <a href="http://api.share.adobe.com/">Share Developer Site</a>.</li>
+</ul>
+
+<p>
+The developer key and shared secret are used to connect from ColdFusion to the Share service. The username and password
+is the account that is accessed by the ColdFusion code. You can connect to any account you have a username or password for, 
+but must use the developer key and shared secret to first creation that connection.
+</p>
+
+<p>
+To begin using the CFC, you must create an instance of the CFC and call the INIT method. The init
+method takes four arguments: username, password, developer key, and shared secret. The init method
+will then connect to the Share service. In order for futher operations to work, you <b>must</b>
+continue to work with this CFC. That means you should store the CFC in a persistant scope, like
+the Application scope. Here is an example:	
+</p>
+
+<p>
+<code>
+&lt;cfif not isDefined("application.share")&gt;<br />
+&nbsp;&nbsp;&nbsp;&lt;cfset application.share = createObject("component", "share").init(username,password,appkey,sharedsecret)&gt;<br />
+&lt;/cfif&gt;<br />
+</code>
+</p>
+
+This sample checks to see if the Application variable share exists. If not, it creates an instance
+and calls the init method all in one. The four values above represent variables that store the relevant
+connection information.
+
+<h2>Methods</h2>
+
+<p>
+ShareCFC supports the following methods. Arguments in <i>italics</i> are optional.
+</p>
+
+<table width="100%" border="1">
+	<tr valign="top">
+		<td><b>delete(nodeid)</b></td>
+		<td>
+		Deletes a node (file/folder) from your Share collection.	
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>download(nodeid,filename)</b></td>
+		<td>
+		Downloads a file to the location specified in the filename attribute.	
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>downloadThumbnail(nodeid,filename)</b></td>
+		<td>
+		Downloads a file thumbnail (a JPG) to the location specified in the filename attribute.	
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>list(<i>nodeid</i>)</b></td>
+		<td>
+		Lists the content of a Share collection. If the nodeid of a folder is specified, it will list
+		the contents of that folder. Returns a query.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>move(nodeid,destination,<i>newname</i>)</b></td>
+		<td>
+		Moves a file specified by nodeid to the destination folder. You can optionally rename the node as well.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>newfolder(name,<i>description</i>,<i>nodeid</i>)</b></td>
+		<td>
+		Creates a new folder. If you specify the third argument, the folder will be a child
+		of the folder specified in nodeid.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>rename(nodeid,newname)</b></td>
+		<td>
+		Renames a node.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>share(nodeid,emaillist,message,level)</b></td>
+		<td>
+		This operation creates a new share. It lets you share a node with another user. The attribute emaillist
+		is a list of email addresses. The message attribute is a message that is sent via email to the users. Level represents
+		the level of the share. Valid values are private and public.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>shareupdate(nodeid,<i>addlist</i>,<i>removelist</i>,<i>message</i>)</b></td>
+		<td>
+		Updates the people who have access to a share. You can add or remove people from the share
+		and supply an optional message to be sent with the update.
+		</td>
+	</tr>
+	<tr valign="top">
+		<td><b>upload(filename,<i>description</i>,<i>renditions</i>,<i>node</i>)</b></td>
+		<td>
+		Uploads a file to the Share service. Renditions is boolean value. If true, a thumbnail, preview, and
+		PDF rendition of the file is created upon upload.
+		</td>
+	</tr>
+
+</table>
